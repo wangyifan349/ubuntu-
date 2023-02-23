@@ -1,0 +1,37 @@
+#ubuntu搭建php7.4、nginx环境一件脚本
+
+#!/bin/bash
+
+# Update system
+apt update
+apt upgrade -y
+
+# Install Nginx and PHP
+apt install nginx php7.4-fpm php7.4-mysql php7.4-curl php7.4-gd php7.4-mbstring php7.4-xml php7.4-zip -y
+
+# Configure Nginx
+echo "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.php index.html index.htm;
+
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}" > /etc/nginx/sites-available/default
+
+# Restart Nginx
+systemctl restart nginx

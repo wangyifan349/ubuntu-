@@ -1,8 +1,10 @@
 #!/bin/bash
-
+#加固服务器安全用
 # 更新系统软件包
 sudo apt update
 sudo apt upgrade -y
+sudo apt install vim -y
+sudo apt install ufw -y
 
 # 禁用root用户登录
 echo "PermitRootLogin no" | sudo tee -a /etc/ssh/sshd_config
